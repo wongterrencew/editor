@@ -12,6 +12,7 @@ React = require('react')
 ReactDOM = require('react-dom')
 StreakCounter = require('../components/StreakCounter').default
 StreakBar = require('../components/StreakBar').default
+StreakExclamations = require('../components/StreakExclamations').default
 
 class App
   POWER_MODE_ACTIVATION_THRESHOLD: 200
@@ -53,9 +54,12 @@ class App
   particlePointer: 0
   lastDraw: 0
 
+  exclamations: []
+
   constructor: ->
     @streakCounterMountNode = document.getElementById('streak-counter')
     @streakBarMountNode = document.getElementById('streak-bar')
+    @streakExclamationsMountNode = document.getElementById('streak-exclamations')
     @renderStreak()
 
     ReactDOM.render(
@@ -63,7 +67,6 @@ class App
       @streakBarMountNode
     )
 
-    @$exclamations = $ ".streak-container .exclamations"
     @$reference = $ ".reference-screenshot-container"
     @$nameTag = $ ".name-tag"
     @$result = $ ".result"
@@ -161,14 +164,19 @@ class App
     )
 
   showExclamation: ->
-    $exclamation = $("<span>")
-      .addClass "exclamation"
-      .text _.sample(@EXCLAMATIONS)
-
-    @$exclamations.prepend $exclamation
-    setTimeout ->
-      $exclamation.remove()
+    @exclamations.push _.sample(@EXCLAMATIONS)
+    setTimeout =>
+      @exclamations.shift()
+      ReactDOM.render(
+        React.createElement(StreakExclamations, {exclamations: @exclamations}),
+        @streakExclamationsMountNode
+      )
     , 3000
+
+    ReactDOM.render(
+      React.createElement(StreakExclamations, {exclamations: @exclamations}),
+      @streakExclamationsMountNode
+    )
 
   getCursorPosition: ->
     {left, top} = @editor.renderer.$cursorLayer.getPixelPosition()
