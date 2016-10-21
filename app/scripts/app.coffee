@@ -13,6 +13,7 @@ ReactDOM = require('react-dom')
 StreakCounter = require('../components/StreakCounter').default
 StreakBar = require('../components/StreakBar').default
 StreakExclamations = require('../components/StreakExclamations').default
+ReferenceScreenshot = require('../components/ReferenceScreenshot').default
 
 class App
   POWER_MODE_ACTIVATION_THRESHOLD: 200
@@ -60,6 +61,7 @@ class App
     @streakCounterMountNode = document.getElementById('streak-counter')
     @streakBarMountNode = document.getElementById('streak-bar')
     @streakExclamationsMountNode = document.getElementById('streak-exclamations')
+    @referenceScreenshotMountNode = document.getElementById('reference-screenshot')
     @renderStreak()
 
     ReactDOM.render(
@@ -67,7 +69,11 @@ class App
       @streakBarMountNode
     )
 
-    @$reference = $ ".reference-screenshot-container"
+    ReactDOM.render(
+      React.createElement(ReferenceScreenshot, null),
+      @referenceScreenshotMountNode
+    )
+
     @$nameTag = $ ".name-tag"
     @$result = $ ".result"
     @$editor = $ "#editor"
@@ -90,7 +96,6 @@ class App
     $(window).on "beforeunload", -> "Hold your horses!"
 
     $(".instructions-container, .instructions-button").on "click", @onClickInstructions
-    @$reference.on "click", @onClickReference
     @$finish.on "click", @onClickFinish
     @$nameTag.on "click", => @getName true
 
@@ -253,10 +258,6 @@ class App
   onClickInstructions: =>
     $("body").toggleClass "show-instructions"
     @editor.focus() unless $("body").hasClass "show-instructions"
-
-  onClickReference: =>
-    @$reference.toggleClass "active"
-    @editor.focus() unless @$reference.hasClass("active")
 
   onClickFinish: =>
     confirm = prompt "
