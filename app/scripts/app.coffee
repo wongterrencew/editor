@@ -11,6 +11,7 @@ require "brace/ext/searchbox"
 React = require('react')
 ReactDOM = require('react-dom')
 StreakCounter = require('../components/StreakCounter').default
+StreakBar = require('../components/StreakBar').default
 
 class App
   POWER_MODE_ACTIVATION_THRESHOLD: 200
@@ -54,9 +55,14 @@ class App
 
   constructor: ->
     @streakCounterMountNode = document.getElementById('streak-counter')
+    @streakBarMountNode = document.getElementById('streak-bar')
     @renderStreak()
 
-    @$streakBar = $ ".streak-container .bar"
+    ReactDOM.render(
+      React.createElement(StreakBar, null),
+      @streakBarMountNode
+    )
+
     @$exclamations = $ ".streak-container .exclamations"
     @$reference = $ ".reference-screenshot-container"
     @$nameTag = $ ".name-tag"
@@ -149,16 +155,10 @@ class App
     )
 
   refreshStreakBar: ->
-    @$streakBar.css
-      "webkit-transform": "scaleX(1)"
-      "transform": "scaleX(1)"
-      "transition": "none"
-
-    _.defer =>
-      @$streakBar.css
-        "webkit-transform": ""
-        "transform": ""
-        "transition": "all #{@STREAK_TIMEOUT}ms linear"
+    ReactDOM.render(
+      React.createElement(StreakBar, null),
+      @streakBarMountNode
+    )
 
   showExclamation: ->
     $exclamation = $("<span>")
