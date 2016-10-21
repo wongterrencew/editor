@@ -43,6 +43,7 @@ config =
       loaders: [
         { test: /\.scss$/, loaders: ["style", "css", "postcss-loader", "sass"] }
         { test: /\.coffee$/, loaders: ["coffee"] }
+        { test: /components\/(.*)\.js$/, loaders: ['babel?{"presets": ["stage-0", "es2015", "react"]}'] }
         { test: /\.png/, loaders: ["url-loader?mimetype=image/png"] }
         { test: /\.ttf/, loaders: ["url-loader?mimetype=font/ttf"] }
       ]

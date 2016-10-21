@@ -8,6 +8,10 @@ require "brace/mode/html"
 require "brace/theme/vibrant_ink"
 require "brace/ext/searchbox"
 
+React = require('react')
+ReactDOM = require('react-dom')
+StreakCounter = require('../components/StreakCounter').default
+
 class App
   POWER_MODE_ACTIVATION_THRESHOLD: 200
   STREAK_TIMEOUT: 10 * 1000
@@ -49,7 +53,9 @@ class App
   lastDraw: 0
 
   constructor: ->
-    @$streakCounter = $ ".streak-container .counter"
+    @streakCounterMountNode = document.getElementById('streak-counter')
+    @renderStreak()
+
     @$streakBar = $ ".streak-container .bar"
     @$exclamations = $ ".streak-container .exclamations"
     @$reference = $ ".reference-screenshot-container"
@@ -137,12 +143,10 @@ class App
     @deactivatePowerMode()
 
   renderStreak: ->
-    @$streakCounter
-      .text @currentStreak
-      .removeClass "bump"
-
-    _.defer =>
-      @$streakCounter.addClass "bump"
+    ReactDOM.render(
+      React.createElement(StreakCounter, { currentStreak: @currentStreak }),
+      @streakCounterMountNode
+    )
 
   refreshStreakBar: ->
     @$streakBar.css
