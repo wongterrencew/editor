@@ -10,6 +10,7 @@ require "brace/ext/searchbox"
 
 React = require('react')
 ReactDOM = require('react-dom')
+AceEditor = require('react-ace').default
 StreakCounter = require('../components/StreakCounter').default
 StreakBar = require('../components/StreakBar').default
 StreakExclamations = require('../components/StreakExclamations').default
@@ -62,6 +63,7 @@ class App
     @streakBarMountNode = document.getElementById('streak-bar')
     @streakExclamationsMountNode = document.getElementById('streak-exclamations')
     @referenceScreenshotMountNode = document.getElementById('reference-screenshot')
+    @editorMountNode = document.getElementById('react-editor')
     @renderStreak()
 
     ReactDOM.render(
@@ -104,6 +106,9 @@ class App
     window.requestAnimationFrame? @onFrame
 
   setupAce: ->
+    ReactDOM.render(AceEditor, {
+
+    }, @editorMountNode)
     editor = ace.edit "editor"
 
     editor.setShowPrintMargin false

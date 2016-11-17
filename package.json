@@ -37,6 +37,7 @@
   "dependencies": {
     "classnames": "^2.2.5",
     "react": "^15.3.2",
+    "react-ace": "^3.6.1",
     "react-dom": "^15.3.2"
   }
 }
